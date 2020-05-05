@@ -1,0 +1,9 @@
+{
+  "Server": {
+    "Port": 1233
+  },
+  "Postgres": {
+    "ConnStr": "postgres://postgres@localhost?sslmode=disable"
+  },
+  "Verbosity": 5
+}

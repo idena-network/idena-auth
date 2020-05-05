@@ -1,0 +1,1 @@
+select logout($1, $2)
