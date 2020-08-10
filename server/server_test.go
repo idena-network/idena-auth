@@ -13,7 +13,6 @@ import (
 	"github.com/idena-network/idena-go/common"
 	"github.com/idena-network/idena-go/common/hexutil"
 	"github.com/idena-network/idena-go/crypto"
-	"github.com/idena-network/idena-go/rlp"
 	"github.com/idena-network/idena-go/tests"
 	"github.com/pkg/errors"
 	"github.com/stretchr/testify/require"
@@ -352,8 +351,13 @@ func sendRequest(req string, body []byte) ([]byte, error) {
 
 func signValue(value string, key *ecdsa.PrivateKey) string {
 	buffer := memguard.NewBufferFromBytes(crypto.FromECDSA(key))
-	hash := rlp.Hash(value)
+	hash := signatureHash(value)
 	sec, _ := crypto.ToECDSA(buffer.Bytes())
 	sig, _ := crypto.Sign(hash[:], sec)
 	return hexutil.Encode(sig)
+}
+
+func signatureHash(value string) common.Hash {
+	h := crypto.Hash([]byte(value))
+	return crypto.Hash(h[:])
 }

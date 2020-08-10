@@ -9,7 +9,6 @@ import (
 	"github.com/idena-network/idena-go/common"
 	"github.com/idena-network/idena-go/common/hexutil"
 	"github.com/idena-network/idena-go/crypto"
-	"github.com/idena-network/idena-go/rlp"
 	log "github.com/inconshreveable/log15"
 	"time"
 )
@@ -124,7 +123,8 @@ func signatureAddress(nonce, signature string) (common.Address, error) {
 }
 
 func signatureHash(value string) common.Hash {
-	return rlp.Hash(value)
+	h := crypto.Hash([]byte(value))
+	return crypto.Hash(h[:])
 }
 
 func (a *authImpl) GetAccount(version, token string) (types.GetAccountResponse, error) {
